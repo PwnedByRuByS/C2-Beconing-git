@@ -8,6 +8,9 @@ set the url of the github issue you whant to use in main.cpp: ```std::string url
 set the url of your discord webhook in main.cpp: ```std::string discordWebHook = "https://...```
 
 Compile it:
+
+Install ```lcurl``` library
+
 ```make```
 
 run it !
