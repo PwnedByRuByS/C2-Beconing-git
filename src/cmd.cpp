@@ -16,8 +16,9 @@ const std::string& Cmd::getLastContent() const {
 }
 
 bool Cmd::addContentIfChanged(const std::string& content) {
-    if (content != lastContent) {
-        return true;
-    }
-    return false;
+    // La fonction ne fait pas ce qu'elle prétend faire.
+    // On peut penser à isNewContent() par exemple.
+    // Le code appellant pourra assez naturellement faire
+    // if (cmd.isNewContent(content) {addContent();})
+    return content != allContent.back();
 }

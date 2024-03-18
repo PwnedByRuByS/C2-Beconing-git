@@ -13,7 +13,7 @@ std::string HtmlParser::extractContent(const std::string& html) {
     for (std::sregex_iterator i = words_begin; i != words_end; ++i) {
         std::smatch match = *i;
         extractedContent += match.str(1);
-        cmd.addContent(match.str(1));
+        cmd.addContent(match.str(1));  // La fonction fait plus que ce qu'elle prétend faire.
     }
 
     std::cout << "Number of matches: " << std::distance(words_begin, words_end) << std::endl;

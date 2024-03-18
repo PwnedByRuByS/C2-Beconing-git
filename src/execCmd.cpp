@@ -51,6 +51,11 @@ void ExecCmd::sendToDiscordWebhook(const std::string& webhookURL, const std::str
     if (curl) {
         // Échapper le message pour les caractères spéciaux
         char* escapedMessage = curl_easy_escape(curl, message.c_str(), 0);
+        // Le commentaire n'ajoute rien au code qui était déjà très clair.
+        // Pire, il est menteur car les caractères tels que -, ., _, ou ~
+        // sont considérés comme sûrs dans une URL et ne nécessitent donc
+        // pas d’être échappés alors que ce sont bel et bien des caractères spéciaux.
+        // Des noms comme slug ou urlEncoded à la place d'escapedMessage peuvent ajouter de la précision.
 
         std::string postData = "content=```" + std::string(escapedMessage) + "```";
 
@@ -60,6 +65,8 @@ void ExecCmd::sendToDiscordWebhook(const std::string& webhookURL, const std::str
         curl_easy_setopt(curl, CURLOPT_URL, webhookURL.c_str());
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, postData.c_str());
         curl_easy_setopt(curl, CURLOPT_POST, 1L);  // Spécifier la méthode POST
+        // Ce commentaire fait penser qu'il y a quelque chose de particulier à faire
+        // attention avec la méthode POST. Pourquoi commenter ici et pas les autres?
 
         res = curl_easy_perform(curl);
 
